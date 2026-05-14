@@ -49,4 +49,4 @@ jobs:
         # conda setup requires this special shell
         shell: bash -l {0}
         run: |
-          pytest -v --cov=qam --cov-report=xml --color=yes qam/tests/
+          python -m pytest -v --cov=qam --cov-report=xml --color=yes qam/tests/
