@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import math
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-from MemPool import MemPool
+from .mempool import MemPool
 import tkinter as tk
 
 class QAM:

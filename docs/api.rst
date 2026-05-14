@@ -4,4 +4,6 @@ API Documentation
 .. autosummary::
    :toctree: autosummary
 
-   qam.canvas
+   qam.QAM
+   qam.MemPool
+   qam.QAMGUI
