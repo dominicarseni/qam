@@ -9,19 +9,17 @@ on:
   push:
     branches:
       - "main"
+      - "master"
   pull_request:
     branches:
       - "main"
-  schedule:
-    # Weekly tests run on main by default:
-    #   Scheduled workflows run on the latest commit on the default or base branch.
-    #   (from https://help.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events-schedule)
-    - cron: "0 0 * * 0"
+      - "master"
 
 jobs:
   test:
     name: Test on ${{ matrix.os }}, Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
+    
     strategy:
       matrix:
         os: [macOS-latest, ubuntu-latest, windows-latest]
@@ -30,14 +28,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Additional info about the build
-        shell: bash
-        run: |
-          uname -a
-          df -h
-          ulimit -a
-
-      # More info on options: https://github.com/marketplace/actions/setup-micromamba
       - uses: mamba-org/setup-micromamba@v2
         with:
           environment-file: devtools/conda-envs/test_env.yaml
@@ -53,17 +43,10 @@ jobs:
         shell: bash -l {0}
         run: |
           python -m pip install . --no-deps
-          micromamba list
+          conda list
 
       - name: Run tests
         # conda setup requires this special shell
         shell: bash -l {0}
         run: |
           pytest -v --cov=qam --cov-report=xml --color=yes qam/tests/
-
-      - name: CodeCov
-        uses: codecov/codecov-action@v5
-        with:
-          files: ./coverage.xml
-          flags: unittests
-          name: codecov-${{ matrix.os }}-py${{ matrix.python-version }}

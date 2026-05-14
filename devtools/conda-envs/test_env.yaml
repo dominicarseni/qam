@@ -1,18 +1,16 @@
 name: test
 channels:
-
+  - conda-forge
   - defaults
+
 dependencies:
     # Base depends
   - python
   - pip
-
-    # Testing
+  - numpy
+  - matplotlib
   - pytest
   - pytest-cov
-  - codecov
-
-    # Pip-only installs
-  #- pip:
-  #  - codecov
+  - pip:
+    - pennylane
 
