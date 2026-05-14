@@ -7,6 +7,12 @@ QAM
 
 A Python package implementing quantum associative memory algorithms using PennyLane.
 
+This repository is currently under development. To do installation in development mode, download this repository and type
+
+`pip install -e .`
+
+in the repository directory.
+
 ### Copyright
 
 Copyright (c) 2026, Dominic Arseni
