@@ -1,5 +1,4 @@
 import matplotlib
-matplotlib.use("TkAgg")
 
 import tkinter as tk
 import numpy as np

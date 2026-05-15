@@ -2,9 +2,15 @@
 
 # Add imports here
 from .qam import QAM
-from .qamgui import QAMGUI
 
 __all__ = ["QAM", "QAMGUI"]
+
+def __getattr__(name):
+    if name == "QAMGUI":
+        from .qamgui import QAMGUI
+        return QAMGUI
+
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 from ._version import __version__
