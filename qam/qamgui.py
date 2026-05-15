@@ -1,17 +1,28 @@
 import tkinter as tk
+import numpy as np
 from tkinter import messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from .qam import QAM
 
 class QAMGUI:
+    """
+    Graphical user interface used to interact with and display QAM object.
+    Uses Tkinter.
+    Supports:
+    - creating new QAM object,
+    - inserting integer memory records,
+    - record retrieval using specified key,
+    - iterate retrievals,
+    - visualize retrieval data with bar chart.
+    """
     
-    def __init__(self, root):
+    def __init__(self, root: tk.Tk) -> None:
         self.root = root
         self.qam = None
         self.canvas = None
 
-        self.root.geometry("900x600")
+        self.root.geometry("1050x600")
         self.root.title("Quantum Associative Memory")
 
         self.buildLayout()
@@ -19,35 +30,64 @@ class QAMGUI:
 
     #----------- Check for Valid Inputs -----------------
     
-    def checkInt(self, input):
+    def checkInt(self, input: str) -> bool:
         return input == "" or input.isdigit()
     
-    def checkRecordInput(self, input):
+    def checkRecordInput(self, input: str) -> bool:
         return all(char.isdigit() or char in " ," for char in input)
     
     #--------------- Button Events ------------------------
     
-    def add(self):
+    def add(self) -> None:
+        """
+        Store records entered into a text box input field to the memory pool.
+
+        RECORDS field accepts comma-separated or space-separated integers.
+
+        Raises
+        ------
+        ValueError
+            If records outside allowed range are added.
+        """
+
         if not self.makeQAM():
             return
 
-        input = self.recordsEntry.get().strip()
+        recordInput = self.recordsEntry.get().strip()
         
-        if input == "":
+        if recordInput == "":
             return
         
-        records = [int(x) for x in input.replace(",", " ").split()]
-        self.qam.addRecords(records)
+        try:
+            records = [int(x) for x in recordInput.replace(",", " ").split()]
+        
+            self.qam.addRecords(records)
+            self.updateChart()
 
-    def clear(self):
+        except Exception as exc:
+            messagebox.showerror("Input Error", str(exc))
+
+    def clear(self) -> None:
+        """
+        Remove all records from the memory pool and reset the bar chart.
+        """
         if self.qam is not None:
             self.qam.clear()
 
         self.updateChart()
 
-    def insert(self):
+    def insert(self) -> None:
+        """
+        Run the retrieval circuit using the entered key and run count. Times measured for each record can be seen on the bar chart.
+
+        Raises
+        ------
+        ValueError
+            If the key or run count is invalid.
+        """
         if self.qam is None:
-            self.makeQAM()
+            if not self.makeQAM():
+                return
 
         runsInput = self.runsEntry.get().strip()
         keyInput = self.keyEntry.get().strip()
@@ -56,23 +96,34 @@ class QAMGUI:
             messagebox.showerror("Input Error", "Specify both run count and key!")
             return
         
-        runs = int(runsInput)
-        key = int(keyInput)
+        try:
+            runs = int(runsInput)
+            key = int(keyInput)
 
-        self.qam.key = key
-        counts, best, discarded = self.qam.retrieve(runs)
+            self.qam.setKey(key)
 
-        self.updateChart(counts)
+            counts, best, discarded = self.qam.retrieve(runs)
 
-    def resetPlot(self):
+            self.updateChart(counts)
+        
+        except Exception as exc:
+            messagebox.showerror("Input Error", str(exc))
+
+    def resetPlot(self) -> None:
+        """
+        Clear the bar chart.
+        """
         self.updateChart()
 
-    def makeQAM(self):
+    def makeQAM(self) -> bool:
+        """
+        Create a new QAM object, used when the qubit count is changed.
+        """
         qcInput = self.qubitCountEntry.get().strip()
 
         if qcInput == "":
             messagebox.showerror("Input Error", "Specify the qubit count!")
-            return
+            return False
         
         qCount = int(qcInput)
 
@@ -84,7 +135,10 @@ class QAMGUI:
 
     #----------------- Build Layout --------------------
 
-    def buildLayout(self):
+    def buildLayout(self) -> None:
+        """
+        Create fields, text boxes, buttons, and frames and arrange them within the window.
+        """
         intCheck = self.root.register(self.checkInt)
         recCheck = self.root.register(self.checkRecordInput)
 
@@ -176,11 +230,20 @@ class QAMGUI:
 
     # ----------------- Bar Chart ------------------
 
-    def updateChart(self, counts = None):
+    def updateChart(self, counts: np.ndarray | None  = None) -> None:
+        """
+        Update the bar chart with retrieval results.
+
+        Parameters
+        ----------
+        counts : np.ndarray | None, optional
+            Array with number of times measured for each record. If None,
+            an empty chart is displayed.
+        """
         if self.canvas is not None:
             self.canvas.get_tk_widget().destroy()
 
-        fig = Figure(figsize = (6, 5), dpi = 100)
+        fig = Figure(figsize = (5.2, 4.2), dpi = 100)
         ax = fig.add_subplot(111)
 
         ax.set_title("Retrieval Results")
