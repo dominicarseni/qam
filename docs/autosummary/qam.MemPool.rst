@@ -1,4 +1,4 @@
-﻿qam.MemPool
+qam.MemPool
 ===========
 
 .. currentmodule:: qam

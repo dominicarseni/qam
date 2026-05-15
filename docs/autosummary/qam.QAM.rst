@@ -18,7 +18,7 @@
       ~QAM.clear
       ~QAM.displayPrepCircuit
       ~QAM.displayRetrievalCircuit
-      ~QAM.printFinalState
+      ~QAM.printFinalStateData
       ~QAM.printInitState
       ~QAM.removeRecords
       ~QAM.retrieve
