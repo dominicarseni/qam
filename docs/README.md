@@ -1,8 +1,27 @@
+# QAM
+
+Quantum Associative Memory simulator implemented with Pennylnae
+
+Supports:
+- QAM model using hamming-distance phase applications
+- probabilistic retrieval via phase interference.
+- visualization and accessor methods for memory states and circuits.
+- Tkinter gui for a more interactive QAM experience.
+
+## Installation
+
+Clone the repository and install in editable mode:
+
+```bash
+git clone <repo-url>
+cd qam
+python -m pip install -e .
+
+
 # Compiling QAM's Documentation
 
 The docs for this project are built with [Sphinx](http://www.sphinx-doc.org/en/master/).
 To compile the docs, first ensure that the necessary dependencies are installed.
-
 
 
 Once installed, you can use the `Makefile` in this directory to compile static HTML pages by
