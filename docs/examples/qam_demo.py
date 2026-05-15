@@ -6,12 +6,15 @@ integer record values are 0 to 3 (00, 01, 10, 11 in binary, respectively). The r
 to the memory pool, and the initial state and final state retrieval data are printed. Retrieval
 is performed with a specified number of shots.
 
-Additionally, show that a 4 qubit QAM object allows for a greater range of inputs.
+Show that a 4 qubit QAM object allows for a greater range of inputs.
 
-
+See how to create a QAMGUI object to visualize and directly interact with a QAM.
 """
 
+import tkinter as tk
 from qam import QAM
+from qam import QAMGUI
+
 
 def main() -> None:
     """
@@ -50,7 +53,6 @@ def main() -> None:
     qam.displayRetrievalCircuit()
 
     # Run the retrieval circuit with specified number of runs. 
-    print("\nRetrieval Results: ")
     counts, best_record, discarded = qam.retrieve(1000)
 
     print("\nOutput: ")
@@ -61,7 +63,7 @@ def main() -> None:
     # Now replace 1000 with 100. How does the accuracy of the result depend on the number of runs? 
 
     # Remove all records from the QAM.
-    qam2.clear()
+    qam.clear()
 
     # If you need to store more records, create a QAM object with more qubits, e.g. 4.
     # The key can be set separately.
@@ -77,7 +79,13 @@ def main() -> None:
     qam2.setKey(10)
 
     # Make sure the key is what you expect.
+    print("\nKey: ")
     print(qam2.key)
+
+    # Open a QAMGUI window to visualize retrieval data.
+    root = tk.Tk()
+    qamgui = QAMGUI(root)
+    root.mainloop()
 
 
 if __name__ == "__main__":

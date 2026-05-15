@@ -1,6 +1,5 @@
 import pennylane as qml
 import numpy as np
-import matplotlib.pyplot as plt
 from collections.abc import Iterable
 from ._mempool import MemPool
 
@@ -126,12 +125,14 @@ class QAM:
             print(f"{rec:>6} | {dist:>16} | {phase:>7.4f} | {amp:>20.6}")
 
     def displayPrepCircuit(self) -> None:
+        import matplotlib.pyplot as plt
         """
         Display circuit used to prepare initial memory state.
         """
         self.memory.displayCircuit()
 
     def displayRetrievalCircuit(self) -> None:
+        import matplotlib.pyplot as plt
         """
         Display retrieval circuit.
 

@@ -1,6 +1,5 @@
 import pennylane as qml
 import numpy as np
-import matplotlib.pyplot as plt
 import math
 from collections.abc import Iterable
 class MemPool:
@@ -111,6 +110,7 @@ class MemPool:
         print(self.state)
 
     def displayCircuit(self) -> None:
+        import matplotlib.pyplot as plt
         """
         Display the circuit that prepares the state.
 

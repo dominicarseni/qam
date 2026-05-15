@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use("TkAgg")
+
 import tkinter as tk
 import numpy as np
 from tkinter import messagebox
@@ -22,7 +25,7 @@ class QAMGUI:
         self.qam = None
         self.canvas = None
 
-        self.root.geometry("1050x600")
+        self.root.geometry("900x500")
         self.root.title("Quantum Associative Memory")
 
         self.buildLayout()
